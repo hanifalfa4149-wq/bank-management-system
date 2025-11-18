@@ -1,0 +1,10 @@
+5
+1 hanif 5880 500000.00 1
+DEPOSIT 500000.00 2025-01-01   Setoran dana
+2 angga 3445 500000.00 2
+DEPOSIT 750000.00 2025-01-01   Setoran dana
+TRANSFER 250000.00 2025-01-01  Transfer ke edho
+3 edho 4336 250000.00 1
+TRANSFER 250000.00 2025-01-01  Transfer dari angga
+4 salsabila 4567 0.00 0
+5 zullia 354 0.00 0
