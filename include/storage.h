@@ -8,5 +8,7 @@
 
 void saveAllAccounts(Bank *bank);
 void loadAllAccounts(Bank *bank);
+void saveAuditLog(Bank *bank);
+void loadAuditLog(Bank *bank);
 
 #endif

@@ -1,10 +1,25 @@
 #include <stdio.h>
-#include "menu.h"
-#include "account.h"
-#include "transaction.h"
-#include "storage.h"
-#include "utils.h"
-#include "operations.h"
+#include "../include/menu.h"
+#include "../include/account.h"
+#include "../include/transaction.h"
+#include "../include/storage.h"
+#include "../include/utils.h"
+#include "../include/operations.h"
+#include "../include/admin.h"
+#include "../include/audit.h"
+
+// Entry menu - choose between customer and admin
+void showEntryMenu()
+{
+    printf("\n");
+    printf("========================================\n");
+    printf("        BANK MANAGEMENT SYSTEM\n");
+    printf("========================================\n");
+    printf("1. Customer Login\n");
+    printf("2. Admin Login\n");
+    printf("0. Exit\n");
+    printf("========================================\n");
+}
 
 void showMainMenu(Bank *bank)
 {

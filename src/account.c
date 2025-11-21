@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include "account.h"
-#include "bank.h"
+#include "../include/account.h"
+#include "../include/bank.h"
 
 void createAccount(Bank *bank)
 {
@@ -63,4 +63,21 @@ int validatePassword(Account *acc, const char *password)
 void setAccountPassword(Account *acc, const char *password)
 {
     strcpy(acc->password, password);
+}
+
+int isAccountFrozen(Account *acc)
+{
+    return acc->isFrozen;
+}
+
+void freezeAccount(Account *acc, const char *reason)
+{
+    acc->isFrozen = 1;
+    strcpy(acc->freezeReason, reason);
+}
+
+void unfreezeAccount(Account *acc)
+{
+    acc->isFrozen = 0;
+    strcpy(acc->freezeReason, "");
 }

@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "storage.h"
-#include "transaction.h"
-#include "utils.h"
+#include "../include/storage.h"
+#include "../include/transaction.h"
+#include "../include/audit.h"
+#include "../include/utils.h"
 
 void saveAllAccounts(Bank *bank)
 {
@@ -20,8 +21,9 @@ void saveAllAccounts(Bank *bank)
     {
         Account *acc = &bank->accounts[i];
 
-        fprintf(fp, "%d %s %s %.2lf %d\n",
-                acc->id, acc->name, acc->password, acc->balance, acc->transactionCount);
+        fprintf(fp, "%d %s %s %.2lf %d %d %s\n",
+                acc->id, acc->name, acc->password, acc->balance, acc->transactionCount,
+                acc->isFrozen, acc->freezeReason);
 
         for (int j = 0; j < acc->transactionCount; j++)
         {
@@ -50,8 +52,10 @@ void loadAllAccounts(Bank *bank)
     {
         Account *acc = &bank->accounts[i];
 
-        fscanf(fp, "%d %s %s %lf %d",
-               &acc->id, acc->name, acc->password, &acc->balance, &acc->transactionCount);
+        fscanf(fp, "%d %s %s %lf %d %d",
+               &acc->id, acc->name, acc->password, &acc->balance, &acc->transactionCount, &acc->isFrozen);
+        fgets(acc->freezeReason, sizeof(acc->freezeReason), fp);
+        trimTrailingNewline(acc->freezeReason);
 
         for (int j = 0; j < acc->transactionCount; j++)
         {
@@ -64,4 +68,55 @@ void loadAllAccounts(Bank *bank)
 
     fclose(fp);
     printf("Data berhasil dimuat!\n");
+}
+
+// Save audit log
+void saveAuditLog(Bank *bank)
+{
+    FILE *fp = fopen("../data/audit_log.txt", "w");
+    if (!fp)
+    {
+        return; // Silent fail if can't save audit log
+    }
+
+    fprintf(fp, "%d\n", bank->auditCount);
+
+    for (int i = 0; i < bank->auditCount; i++)
+    {
+        AuditLogEntry *entry = &bank->auditLog[i];
+        fprintf(fp, "%d|%s|%s|%d|%s|%s|%s\n",
+                entry->logId, entry->adminName, entry->actionType,
+                entry->targetAccountId, entry->timestamp,
+                entry->description, entry->details);
+    }
+
+    fclose(fp);
+}
+
+void loadAuditLog(Bank *bank)
+{
+    FILE *fp = fopen("../data/audit_log.txt", "r");
+    if (!fp)
+    {
+        bank->auditCount = 0;
+        return;
+    }
+
+    fscanf(fp, "%d\n", &bank->auditCount);
+
+    for (int i = 0; i < bank->auditCount && i < MAX_AUDIT_ENTRIES; i++)
+    {
+        AuditLogEntry *entry = &bank->auditLog[i];
+        char line[1024];
+
+        if (fgets(line, sizeof(line), fp) == NULL)
+            break;
+
+        sscanf(line, "%d|%49[^|]|%49[^|]|%d|%19[^|]|%299[^|]|%299[^\n]",
+               &entry->logId, entry->adminName, entry->actionType,
+               &entry->targetAccountId, entry->timestamp,
+               entry->description, entry->details);
+    }
+
+    fclose(fp);
 }

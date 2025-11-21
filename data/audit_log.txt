@@ -1,0 +1,3 @@
+2
+1|UNKNOWN|LOGIN_FAILED|-1|2025-11-21 11:37:12|Invalid admin credentials|-
+2|UNKNOWN|LOGIN_FAILED|-1|2025-11-21 11:37:27|Invalid admin credentials|-

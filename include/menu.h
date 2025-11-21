@@ -6,5 +6,6 @@
 
 void showMainMenu(Bank *bank);
 void handleMenu(Bank *bank);
+void showEntryMenu();
 
 #endif

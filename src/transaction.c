@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <string.h>
-#include "transaction.h"
-#include "bank.h"
-#include "account.h"
-#include "operations.h"
-#include "utils.h"
+#include "../include/transaction.h"
+#include "../include/bank.h"
+#include "../include/account.h"
+#include "../include/operations.h"
+#include "../include/utils.h"
 
 void addTransaction(Account *acc, const char *type, double amount, const char *note)
 {
