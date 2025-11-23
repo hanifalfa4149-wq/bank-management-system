@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <string.h>
 #include "../include/account.h"
 #include "../include/bank.h"
+#include "../include/utils.h"
 
 void createAccount(Bank *bank)
 {
@@ -57,12 +57,12 @@ void showAllAccounts(Bank *bank)
 
 int validatePassword(Account *acc, const char *password)
 {
-    return strcmp(acc->password, password) == 0;
+    return bandingkanString(acc->password, password) == 0;
 }
 
 void setAccountPassword(Account *acc, const char *password)
 {
-    strcpy(acc->password, password);
+    salinString(acc->password, password);
 }
 
 int isAccountFrozen(Account *acc)
@@ -73,11 +73,41 @@ int isAccountFrozen(Account *acc)
 void freezeAccount(Account *acc, const char *reason)
 {
     acc->isFrozen = 1;
-    strcpy(acc->freezeReason, reason);
+    salinString(acc->freezeReason, reason);
 }
 
 void unfreezeAccount(Account *acc)
 {
     acc->isFrozen = 0;
-    strcpy(acc->freezeReason, "");
+    salinString(acc->freezeReason, "");
+}
+
+// Hapus akun dari bank dengan menggeser array accounts
+void closeAccount(Bank *bank, int accountId)
+{
+    int index = -1;
+    int i;
+
+    for (i = 0; i < bank->accountCount; i++)
+    {
+        if (bank->accounts[i].id == accountId)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1)
+    {
+        printf("Account not found!\n");
+        return;
+    }
+
+    for (i = index; i < bank->accountCount - 1; i++)
+    {
+        bank->accounts[i] = bank->accounts[i + 1];
+    }
+
+    bank->accountCount--;
+    printf("Account %d has been closed.\n", accountId);
 }

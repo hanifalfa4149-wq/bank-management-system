@@ -1,15 +1,14 @@
 #include <stdio.h>
-#include <string.h>
-#include <time.h>
 #include "../include/bank.h"
 #include "../include/audit.h"
+#include "../include/utils.h"
 
-// Get current timestamp
+// Get current timestamp - simple version without time.h
 void getCurrentTimestamp(char *timestamp)
 {
-    time_t now = time(NULL);
-    struct tm *localTime = localtime(&now);
-    strftime(timestamp, 20, "%Y-%m-%d %H:%M:%S", localTime);
+    // Use a simple static timestamp since we can't use time.h
+    // In real production, this would get system time
+    salinString(timestamp, "2025-11-21 12:00:00");
 }
 
 // Add audit entry
@@ -25,12 +24,12 @@ void addAuditEntry(Bank *bank, const char *admin, const char *action,
     AuditLogEntry *entry = &bank->auditLog[bank->auditCount];
     entry->logId = bank->auditCount + 1;
 
-    strcpy(entry->adminName, admin);
-    strcpy(entry->actionType, action);
+    salinString(entry->adminName, admin);
+    salinString(entry->actionType, action);
     entry->targetAccountId = targetAccountId;
     getCurrentTimestamp(entry->timestamp);
-    strcpy(entry->description, description);
-    strcpy(entry->details, "-");
+    salinString(entry->description, description);
+    salinString(entry->details, "-");
 
     bank->auditCount++;
 }

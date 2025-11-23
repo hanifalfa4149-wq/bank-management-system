@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "../include/storage.h"
 #include "../include/transaction.h"
 #include "../include/audit.h"
@@ -55,14 +53,14 @@ void loadAllAccounts(Bank *bank)
         fscanf(fp, "%d %s %s %lf %d %d",
                &acc->id, acc->name, acc->password, &acc->balance, &acc->transactionCount, &acc->isFrozen);
         fgets(acc->freezeReason, sizeof(acc->freezeReason), fp);
-        trimTrailingNewline(acc->freezeReason);
+        bersihkanString(acc->freezeReason);
 
         for (int j = 0; j < acc->transactionCount; j++)
         {
             Transaction *t = &acc->transactions[j];
             fscanf(fp, "%s %lf %s", t->type, &t->amount, t->date);
             fgets(t->note, sizeof(t->note), fp);
-            trimTrailingNewline(t->note);
+            bersihkanString(t->note);
         }
     }
 

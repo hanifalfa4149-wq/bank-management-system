@@ -11,7 +11,6 @@ int main()
     Bank bank;
     initBank(&bank);
 
-    // Load existing data
     loadAllAccounts(&bank);
     loadAuditLog(&bank);
 
@@ -21,22 +20,26 @@ int main()
     do
     {
         showEntryMenu();
-        printf("Choose: ");
+        printf("pilih: ");
         scanf("%d", &choice);
 
         if (choice == 1)
         {
-            // Customer mode
-            handleMenu(&bank);
+            // mode customer dengan login ID + password
+            Account *loggedIn = customerLogin(&bank);
+            if (loggedIn)
+            {
+                handleCustomerSession(&bank, loggedIn);
+            }
         }
         else if (choice == 2)
         {
-            // Admin mode
+            // mode admin
             char key[50], password[50];
 
-            printf("\nEnter Master Key: ");
+            printf("\nmasukkan master key: ");
             scanf("%s", key);
-            printf("Enter Password: ");
+            printf("Masukkan password: ");
             scanf("%s", password);
 
             if (adminLogin(key, password))
@@ -54,10 +57,9 @@ int main()
 
     } while (choice != 0);
 
-    // Save data before exit
     saveAllAccounts(&bank);
     saveAuditLog(&bank);
 
-    printf("Goodbye!\n");
+    printf("Terima kasih sudah menggunakan jasa bank kami...\n");
     return 0;
 }

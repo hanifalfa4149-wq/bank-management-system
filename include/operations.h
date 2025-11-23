@@ -15,4 +15,7 @@ int validatePassword(Account *acc, const char *password);
 void setAccountPassword(Account *acc, const char *password);
 void transferMoney(Bank *bank, int fromId, int toId, double amount);
 
+// Operasi administrasi akun
+void closeAccount(Bank *bank, int accountId);
+
 #endif

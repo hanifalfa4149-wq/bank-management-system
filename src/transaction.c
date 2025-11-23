@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 #include "../include/transaction.h"
 #include "../include/bank.h"
 #include "../include/account.h"
@@ -10,10 +9,10 @@ void addTransaction(Account *acc, const char *type, double amount, const char *n
 {
     Transaction *t = &acc->transactions[acc->transactionCount];
 
-    strcpy(t->type, type);
+    salinString(t->type, type);
     t->amount = amount;
-    strcpy(t->note, note);
-    strcpy(t->date, "2025-01-01");
+    salinString(t->note, note);
+    salinString(t->date, "2025-01-01");
 
     acc->transactionCount++;
 }
@@ -24,6 +23,12 @@ void deposit(Bank *bank, int id, double amount)
     if (!acc)
     {
         printf("Akun tidak ditemukan!\n");
+        return;
+    }
+
+    if (acc->isFrozen)
+    {
+        printf("Akun sedang dibekukan, tidak dapat melakukan deposit.\n");
         return;
     }
 
@@ -39,6 +44,12 @@ void withdraw(Bank *bank, int id, double amount)
     if (!acc)
     {
         printf("Akun tidak ditemukan!\n");
+        return;
+    }
+
+    if (acc->isFrozen)
+    {
+        printf("Akun sedang dibekukan, tidak dapat melakukan penarikan.\n");
         return;
     }
 
@@ -116,10 +127,10 @@ void transferMoney(Bank *bank, int fromId, int toId, double amount)
     toAcc->balance += amount;
 
     char note[60];
-    sprintf(note, "Transfer ke %s", toAcc->name);
+    buildTransferNote(note, "Transfer ke ", toAcc->name);
     addTransaction(fromAcc, "TRANSFER", amount, note);
 
-    sprintf(note, "Transfer dari %s", fromAcc->name);
+    buildTransferNote(note, "Transfer dari ", fromAcc->name);
     addTransaction(toAcc, "TRANSFER", amount, note);
 
     printf("Transfer berhasil! Saldo baru: %.2lf\n", fromAcc->balance);

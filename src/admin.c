@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <string.h>
 #include "../include/admin.h"
 #include "../include/audit.h"
 #include "../include/operations.h"
+#include "../include/utils.h"
 
 // Default admin credentials
 #define ADMIN_KEY "ADMIN"
@@ -11,7 +11,7 @@
 // Validate admin login
 int adminLogin(const char *key, const char *password)
 {
-    if (strcmp(key, ADMIN_KEY) == 0 && strcmp(password, ADMIN_PASSWORD) == 0)
+    if (bandingkanString(key, ADMIN_KEY) == 0 && bandingkanString(password, ADMIN_PASSWORD) == 0)
     {
         return 1; // Success
     }
@@ -163,9 +163,9 @@ void resetAccountPassword(Bank *bank, int accountId)
     scanf("%s", newPassword);
 
     char oldPassword[50];
-    strcpy(oldPassword, acc->password);
+    salinString(oldPassword, acc->password);
 
-    strcpy(acc->password, newPassword);
+    salinString(acc->password, newPassword);
 
     char description[300];
     sprintf(description, "Password reset for account %d (%s)", accountId, acc->name);
@@ -198,16 +198,16 @@ void forceWithdraw(Bank *bank, int accountId, double amount, const char *reason)
     if (acc->transactionCount < MAX_TRANSACTIONS)
     {
         Transaction *trans = &acc->transactions[acc->transactionCount];
-        strcpy(trans->type, "FORCE_WITHDRAW");
+        salinString(trans->type, "FORCE_WITHDRAW");
         trans->amount = amount;
-        strcpy(trans->date, ""); // Will be filled by time function if needed
-        snprintf(trans->note, MAX_NOTE, "Force withdraw by admin: %s", reason);
+        salinString(trans->date, "");
+        salinString(trans->note, "Force withdraw by admin: ");
+        gabungkanString(trans->note, reason);
         acc->transactionCount++;
     }
 
     char description[300];
-    sprintf(description, "Force withdraw Rp %.2lf from account %d. Reason: %s",
-            amount, accountId, reason);
+    sprintf(description, "Force withdraw from account %d. Reason: %s", accountId, reason);
     addAuditEntry(bank, "ADMIN", "FORCE_WITHDRAW", accountId, description);
 
     printf("✓ Withdrawn Rp %.2lf from account %d.\n", amount, accountId);
@@ -346,11 +346,11 @@ void generateReport(Bank *bank)
         for (int j = 0; j < acc->transactionCount; j++)
         {
             Transaction *trans = &acc->transactions[j];
-            if (strcmp(trans->type, "DEPOSIT") == 0)
+            if (bandingkanString(trans->type, "DEPOSIT") == 0)
                 totalDeposits += trans->amount;
-            else if (strcmp(trans->type, "WITHDRAW") == 0)
+            else if (bandingkanString(trans->type, "WITHDRAW") == 0)
                 totalWithdrawals += trans->amount;
-            else if (strcmp(trans->type, "TRANSFER") == 0)
+            else if (bandingkanString(trans->type, "TRANSFER") == 0)
                 totalTransfers += trans->amount;
         }
     }
