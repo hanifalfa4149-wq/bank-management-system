@@ -54,6 +54,16 @@ int main()
                               "Invalid admin credentials");
             }
         }
+        else if (choice == 3)
+        {
+            saveAllAccounts(&bank);
+            printf("Data berhasil disimpan!\n");
+        }
+        else if (choice == 4)
+        {
+            loadAllAccounts(&bank);
+            printf("Data berhasil dimuat!\n");
+        }
 
     } while (choice != 0);
 

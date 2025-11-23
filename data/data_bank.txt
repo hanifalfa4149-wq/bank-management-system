@@ -1,8 +1,6 @@
 3
-1 hanif 5880 400000.00 2 0           DEPOSIT 500000.00 2025-01-01
-FORCE_WITHDRAW 100000.00 Force      withdraw by admin: biaya admin
-0.00 2.00 edho    4321 450000.00 1 0 
-2 salsabila 1243 250000.00 1 0    
-DEPOSIT 250000.00 2025-01-01    Setoran dana
-3 zulia 4312 345000.00 1 0    
-DEPOSIT 345000.00 2025-01-01    Setoran dana
+1|hanif|123456|750000.00|2|0|
+DEPOSIT|1000000.00|2025-01-01|Setoran dana
+WITHDRAW|250000.00|2025-01-01|Penarikan dana
+2|angga|654321|0.00|0|0|
+3|edho|123654|0.00|0|0|

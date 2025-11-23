@@ -17,6 +17,8 @@ void showEntryMenu()
     printf("========================================\n");
     printf("1. Customer Login\n");
     printf("2. Admin Login\n");
+    printf("3. Simpan Data\n");
+    printf("4. Muat Data\n");
     printf("0. Exit\n");
     printf("========================================\n");
 }
@@ -30,8 +32,6 @@ void showMainMenu(Bank *bank)
     printf("4. Lihat Riwayat Transaksi\n");
     printf("5. Transfer Uang\n");
     printf("6. Ubah Password\n");
-    printf("7. Simpan Data\n");
-    printf("8. Muat Data\n");
     printf("0. Logout\n");
 }
 
@@ -132,14 +132,6 @@ void handleCustomerSession(Bank *bank, Account *currentAcc)
             {
                 printf("Password salah!\n");
             }
-            break;
-
-        case 7:
-            saveAllAccounts(bank);
-            break;
-
-        case 8:
-            loadAllAccounts(bank);
             break;
 
         case 0:

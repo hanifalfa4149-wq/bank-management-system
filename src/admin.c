@@ -3,6 +3,7 @@
 #include "../include/audit.h"
 #include "../include/operations.h"
 #include "../include/utils.h"
+#include "../include/account.h"
 
 // Default admin credentials
 #define ADMIN_KEY "ADMIN"
@@ -382,6 +383,7 @@ void showAdminDashboard(Bank *bank)
         printf("2. Manage Accounts\n");
         printf("3. View Audit Log\n");
         printf("4. Generate Report\n");
+        printf("5. Create New Account\n");
         printf("0. Logout\n");
         printf("========================================\n");
         printf("Choose: ");
@@ -403,6 +405,15 @@ void showAdminDashboard(Bank *bank)
 
         case 4:
             generateReport(bank);
+            break;
+
+        case 5:
+            createAccount(bank);
+            if (bank->accountCount > 0)
+            {
+                Account *newAcc = &bank->accounts[bank->accountCount - 1];
+                printf("[ADMIN] New account created. ID: %d, Name: %s\n", newAcc->id, newAcc->name);
+            }
             break;
 
         case 0:

@@ -19,14 +19,16 @@ void saveAllAccounts(Bank *bank)
     {
         Account *acc = &bank->accounts[i];
 
-        fprintf(fp, "%d %s %s %.2lf %d %d %s\n",
-                acc->id, acc->name, acc->password, acc->balance, acc->transactionCount,
-                acc->isFrozen, acc->freezeReason);
+        // Format akun: id|name|password|balance|transactionCount|isFrozen|freezeReason
+        fprintf(fp, "%d|%s|%s|%.2lf|%d|%d|%s\n",
+                acc->id, acc->name, acc->password, acc->balance,
+                acc->transactionCount, acc->isFrozen, acc->freezeReason);
 
+        // Format transaksi per baris: type|amount|date|note
         for (int j = 0; j < acc->transactionCount; j++)
         {
             Transaction *t = &acc->transactions[j];
-            fprintf(fp, "%s %.2lf %s %s\n",
+            fprintf(fp, "%s|%.2lf|%s|%s\n",
                     t->type, t->amount, t->date, t->note);
         }
     }
@@ -44,23 +46,63 @@ void loadAllAccounts(Bank *bank)
         return;
     }
 
-    fscanf(fp, "%d", &bank->accountCount);
+    if (fscanf(fp, "%d\n", &bank->accountCount) != 1)
+    {
+        printf("Format file data tidak valid.\n");
+        fclose(fp);
+        bank->accountCount = 0;
+        return;
+    }
+
+    if (bank->accountCount > MAX_ACCOUNTS)
+    {
+        bank->accountCount = MAX_ACCOUNTS;
+    }
 
     for (int i = 0; i < bank->accountCount; i++)
     {
         Account *acc = &bank->accounts[i];
+        char line[512];
 
-        fscanf(fp, "%d %s %s %lf %d %d",
-               &acc->id, acc->name, acc->password, &acc->balance, &acc->transactionCount, &acc->isFrozen);
-        fgets(acc->freezeReason, sizeof(acc->freezeReason), fp);
-        bersihkanString(acc->freezeReason);
+        if (!fgets(line, sizeof(line), fp))
+        {
+            bank->accountCount = i;
+            break;
+        }
+
+        // Baca: id|name|password|balance|transactionCount|isFrozen|freezeReason
+        // Batasi lebar field agar aman terhadap overflow buffer
+        if (sscanf(line, "%d|%49[^|]|%49[^|]|%lf|%d|%d|%199[^\n]",
+                   &acc->id, acc->name, acc->password, &acc->balance,
+                   &acc->transactionCount, &acc->isFrozen, acc->freezeReason) < 6)
+        {
+            printf("Baris akun tidak valid, melewati sisa data.\n");
+            bank->accountCount = i;
+            break;
+        }
+
+        if (acc->transactionCount < 0)
+            acc->transactionCount = 0;
+        if (acc->transactionCount > MAX_TRANSACTIONS)
+            acc->transactionCount = MAX_TRANSACTIONS;
 
         for (int j = 0; j < acc->transactionCount; j++)
         {
             Transaction *t = &acc->transactions[j];
-            fscanf(fp, "%s %lf %s", t->type, &t->amount, t->date);
-            fgets(t->note, sizeof(t->note), fp);
-            bersihkanString(t->note);
+
+            if (!fgets(line, sizeof(line), fp))
+            {
+                acc->transactionCount = j;
+                break;
+            }
+
+            // type|amount|date|note
+            if (sscanf(line, "%19[^|]|%lf|%19[^|]|%59[^\n]",
+                       t->type, &t->amount, t->date, t->note) < 3)
+            {
+                acc->transactionCount = j;
+                break;
+            }
         }
     }
 

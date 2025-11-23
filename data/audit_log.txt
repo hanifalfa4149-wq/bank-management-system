@@ -1,3 +1,8 @@
-2
+7
 1|UNKNOWN|LOGIN_FAILED|-1|2025-11-21 11:37:12|Invalid admin credentials|-
 2|UNKNOWN|LOGIN_FAILED|-1|2025-11-21 11:37:27|Invalid admin credentials|-
+3|UNKNOWN|LOGIN_FAILED|-1|2025-11-21 12:00:00|Invalid admin credentials|-
+4|ADMIN|LOGIN|-1|2025-11-21 12:00:00|Admin login successful|-
+5|ADMIN|LOGOUT|-1|2025-11-21 12:00:00|Admin logout|-
+6|ADMIN|LOGIN|-1|2025-11-21 12:00:00|Admin login successful|-
+7|ADMIN|LOGOUT|-1|2025-11-21 12:00:00|Admin logout|-
