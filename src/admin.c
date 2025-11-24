@@ -29,7 +29,7 @@ void viewAllAccounts(Bank *bank)
 
     if (bank->accountCount == 0)
     {
-        printf("No accounts yet.\n");
+        printf("Belum ada akun yang dibuat.\n");
         return;
     }
 
@@ -78,7 +78,7 @@ void viewAccountDetails(Bank *bank, int accountId)
 
     if (acc->transactionCount == 0)
     {
-        printf("No transactions yet.\n");
+        printf("Belum ada transaksi\n");
     }
     else
     {
@@ -104,23 +104,23 @@ void adminFreezeAccount(Bank *bank, int accountId, const char *reason)
 
     if (acc == NULL)
     {
-        printf("Account not found!\n");
+        printf("Akun tidak ditemukan!\n");
         return;
     }
 
     if (acc->isFrozen)
     {
-        printf("Account is already frozen!\n");
+        printf("Akun sudah dibekukan\n");
         return;
     }
 
     freezeAccount(acc, reason);
 
     char description[300];
-    sprintf(description, "Account frozen. Reason: %s", reason);
+    sprintf(description, "Akun dibekukan. alasannya: %s", reason);
     addAuditEntry(bank, "ADMIN", "FREEZE_ACCOUNT", accountId, description);
 
-    printf("✓ Account %d (%s) has been frozen.\n", accountId, acc->name);
+    printf("✓ Akun %d (%s) sudah dibekukan.\n", accountId, acc->name);
 }
 
 // Unfreeze account
@@ -242,47 +242,47 @@ void manageAccounts(Bank *bank)
         switch (choice)
         {
         case 1:
-            printf("Enter Account ID: ");
+            printf("Masukkan ID yang ingin dibekukan: ");
             scanf("%d", &accountId);
-            printf("Enter freeze reason: ");
+            printf("Apa alasan akun ini dibekukan?: ");
             scanf(" %[^\n]", reason);
             adminFreezeAccount(bank, accountId, reason);
             break;
 
         case 2:
-            printf("Enter Account ID: ");
+            printf("masukkan ID akun: ");
             scanf("%d", &accountId);
             adminUnfreezeAccount(bank, accountId);
             break;
 
         case 3:
-            printf("Enter Account ID: ");
+            printf("Masukkan ID akun: ");
             scanf("%d", &accountId);
             resetAccountPassword(bank, accountId);
             break;
 
         case 4:
-            printf("Enter Account ID: ");
+            printf("Masukkan ID akun: ");
             scanf("%d", &accountId);
             viewAccountDetails(bank, accountId);
             break;
 
         case 5:
-            printf("Enter Account ID: ");
+            printf("Masukkan ID akun: ");
             scanf("%d", &accountId);
-            printf("Enter amount to withdraw: ");
+            printf("Nominal withdraw: ");
             scanf("%lf", &amount);
-            printf("Enter reason: ");
+            printf("Alasan withdraw?: ");
             scanf(" %[^\n]", reason);
             forceWithdraw(bank, accountId, amount, reason);
             break;
 
         case 0:
-            printf("Back to admin dashboard...\n");
+            printf("kembali ke dashboar admin\n");
             break;
 
         default:
-            printf("Invalid choice!\n");
+            printf("Pilihan kamu invalid\n");
         }
 
     } while (choice != 0);
@@ -296,7 +296,7 @@ void generateReport(Bank *bank)
     printf("     BANK STATISTICS & REPORTS\n");
     printf("========================================\n");
 
-    printf("Total Accounts: %d\n", bank->accountCount);
+    printf("Total akun: %d\n", bank->accountCount);
 
     int activeCount = 0, frozenCount = 0;
     double totalBalance = 0;
@@ -323,8 +323,8 @@ void generateReport(Bank *bank)
         totalTransactions += acc->transactionCount;
     }
 
-    printf("Active Accounts: %d\n", activeCount);
-    printf("Frozen Accounts: %d\n", frozenCount);
+    printf("akun yang aktif: %d\n", activeCount);
+    printf("akun yang dibekukan: %d\n", frozenCount);
 
     printf("\nBalance Summary:\n");
     printf("Total Balance: Rp %.2lf\n", totalBalance);
@@ -379,14 +379,14 @@ void showAdminDashboard(Bank *bank)
         printf("========================================\n");
         printf("         ADMIN DASHBOARD\n");
         printf("========================================\n");
-        printf("1. View All Accounts\n");
-        printf("2. Manage Accounts\n");
-        printf("3. View Audit Log\n");
-        printf("4. Generate Report\n");
-        printf("5. Create New Account\n");
-        printf("0. Logout\n");
+        printf("1. Lihat Semua Akun\n");
+        printf("2. Manage Akun\n");
+        printf("3. Lihat Audit Log\n");
+        printf("4. Buat laporan\n");
+        printf("5. Buat Akun Baru\n");
+        printf("0. Keluar\n");
         printf("========================================\n");
-        printf("Choose: ");
+        printf("Pilih: ");
         scanf("%d", &choice);
 
         switch (choice)
@@ -412,17 +412,17 @@ void showAdminDashboard(Bank *bank)
             if (bank->accountCount > 0)
             {
                 Account *newAcc = &bank->accounts[bank->accountCount - 1];
-                printf("[ADMIN] New account created. ID: %d, Name: %s\n", newAcc->id, newAcc->name);
+                printf("[ADMIN] Akun baru telah dibuat. ID: %d, Name: %s\n", newAcc->id, newAcc->name);
             }
             break;
 
         case 0:
             addAuditEntry(bank, "ADMIN", "LOGOUT", -1, "Admin logout");
-            printf("Logout successful.\n");
+            printf("Logout berhasil\n");
             break;
 
         default:
-            printf("Invalid choice!\n");
+            printf("Pilihan invalid.\n");
         }
 
     } while (choice != 0);

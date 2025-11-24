@@ -16,10 +16,8 @@ typedef struct
     char details[MAX_AUDIT_DETAILS];
 } AuditLogEntry;
 
-// Forward declaration to avoid circular include
 typedef struct Bank Bank;
 
-// Function declarations
 void addAuditEntry(Bank *bank, const char *admin, const char *action,
                    int targetAccountId, const char *description);
 void viewAuditLog(Bank *bank);

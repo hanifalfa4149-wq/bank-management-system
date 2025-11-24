@@ -19,12 +19,10 @@ void saveAllAccounts(Bank *bank)
     {
         Account *acc = &bank->accounts[i];
 
-        // Format akun: id|name|password|balance|transactionCount|isFrozen|freezeReason
         fprintf(fp, "%d|%s|%s|%.2lf|%d|%d|%s\n",
                 acc->id, acc->name, acc->password, acc->balance,
                 acc->transactionCount, acc->isFrozen, acc->freezeReason);
 
-        // Format transaksi per baris: type|amount|date|note
         for (int j = 0; j < acc->transactionCount; j++)
         {
             Transaction *t = &acc->transactions[j];
@@ -70,8 +68,6 @@ void loadAllAccounts(Bank *bank)
             break;
         }
 
-        // Baca: id|name|password|balance|transactionCount|isFrozen|freezeReason
-        // Batasi lebar field agar aman terhadap overflow buffer
         if (sscanf(line, "%d|%49[^|]|%49[^|]|%lf|%d|%d|%199[^\n]",
                    &acc->id, acc->name, acc->password, &acc->balance,
                    &acc->transactionCount, &acc->isFrozen, acc->freezeReason) < 6)
@@ -96,7 +92,6 @@ void loadAllAccounts(Bank *bank)
                 break;
             }
 
-            // type|amount|date|note
             if (sscanf(line, "%19[^|]|%lf|%19[^|]|%59[^\n]",
                        t->type, &t->amount, t->date, t->note) < 3)
             {
@@ -110,13 +105,12 @@ void loadAllAccounts(Bank *bank)
     printf("Data berhasil dimuat!\n");
 }
 
-// Save audit log
 void saveAuditLog(Bank *bank)
 {
     FILE *fp = fopen("../data/audit_log.txt", "w");
     if (!fp)
     {
-        return; // Silent fail if can't save audit log
+        return;
     }
 
     fprintf(fp, "%d\n", bank->auditCount);

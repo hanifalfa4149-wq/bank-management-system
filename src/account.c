@@ -141,7 +141,7 @@ void closeAccount(Bank *bank, int accountId)
 
     if (index == -1)
     {
-        printf("Account not found!\n");
+        printf("Akun tidak ditemukan!\n");
         return;
     }
 
@@ -151,5 +151,5 @@ void closeAccount(Bank *bank, int accountId)
     }
 
     bank->accountCount--;
-    printf("Account %d has been closed.\n", accountId);
+    printf("Akun %d sudah diclosed.\n", accountId);
 }

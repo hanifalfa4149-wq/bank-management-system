@@ -44,14 +44,14 @@ int main()
 
             if (adminLogin(key, password))
             {
-                printf("✓ Admin login successful!\n");
+                printf("Halo admin...\n");
                 showAdminDashboard(&bank);
             }
             else
             {
-                printf("✗ Invalid admin credentials!\n");
+                printf("Kamu bukan admin.\n");
                 addAuditEntry(&bank, "UNKNOWN", "LOGIN_FAILED", -1,
-                              "Invalid admin credentials");
+                              "kamu gagal login sebagai admin");
             }
         }
         else if (choice == 3)

@@ -3,21 +3,17 @@
 #include "../include/audit.h"
 #include "../include/utils.h"
 
-// Get current timestamp - simple version without time.h
 void getCurrentTimestamp(char *timestamp)
 {
-    // Use a simple static timestamp since we can't use time.h
-    // In real production, this would get system time
     salinString(timestamp, "2025-11-21 12:00:00");
 }
 
-// Add audit entry
 void addAuditEntry(Bank *bank, const char *admin, const char *action,
                    int targetAccountId, const char *description)
 {
     if (bank->auditCount >= MAX_AUDIT_ENTRIES)
     {
-        printf("Audit log is full!\n");
+        printf("Audit log sudah penuh!\n");
         return;
     }
 
@@ -44,7 +40,7 @@ void viewAuditLog(Bank *bank)
 
     if (bank->auditCount == 0)
     {
-        printf("No audit entries yet.\n");
+        printf("Belum ada auditing.\n");
         return;
     }
 
@@ -61,7 +57,7 @@ void viewAuditLog(Bank *bank)
                entry->actionType,
                entry->targetAccountId,
                entry->timestamp);
-        printf("  Description: %s\n", entry->description);
+        printf("  Deskripsi: %s\n", entry->description);
     }
 
     printf("========================================\n");

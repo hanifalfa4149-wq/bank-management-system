@@ -9,7 +9,7 @@ typedef struct
     char password[50];
 } AdminAccount;
 
-// Admin management functions
+// fungsi admin
 int adminLogin(const char *key, const char *password);
 void showAdminDashboard(Bank *bank);
 void manageAccounts(Bank *bank);
