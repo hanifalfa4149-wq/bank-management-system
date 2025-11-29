@@ -11,7 +11,7 @@ Sistem Manajemen Bank sederhana yang dibangun dengan bahasa C untuk memenuhi tug
 - [Instalasi](#-instalasi)
 - [Cara Penggunaan](#-cara-penggunaan)
 - [Struktur Proyek](#-struktur-proyek)
-- [Anggota Tim](#-anggota-tim)
+- [Anggota Tim](#-anggota-kelompok)
 - [Lisensi](#-lisensi)
 
 ## ✨ Fitur Utama
@@ -50,12 +50,12 @@ Sistem Manajemen Bank sederhana yang dibangun dengan bahasa C untuk memenuhi tug
 
 2. Compile program:
    ```bash
-   gcc -o bank_system src/*.c -Iinclude
+   .\build.bat
    ```
 
 3. Jalankan program:
    ```bash
-   ./bank_system
+   .\run.bat
    ```
 
 ## 🎮 Cara Penggunaan
@@ -96,18 +96,18 @@ bank-management-system/
 │   ├── operations.c
 │   ├── storage.c
 │   └── utils.c
-└── README.md            # Dokumentasi ini
+└── README.md            # Dokumentasi
 ```
 
-## 👥 Anggota Tim
+## 👥 Anggota Kelompok
 
 | NIM | Nama | Peran |
 |-----|------|-------|
 | 25071104149 | Hanif Alfa Rizki | Tech Lead |
-| 1234567891 | Nama Anggota 1 | Developer |
-| 1234567892 | Nama Anggota 2 | Developer |
-| 1234567888 | Nama Anggota 2 | dokumentasi |
-| 1515151515 | Nama Anggota 2 | PPT Builder |
+| 00000000000 | nama anggota | Developer |
+| 00000000000 | Nama Anggota 2 | Developer |
+| 25071100710 | Salsabila | dokumentasi |
+| 25071207626 | Zullia Adhia Ayzila | PPT Builder |
 
 ## 📄 Lisensi
 

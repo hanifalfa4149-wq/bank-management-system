@@ -27,8 +27,8 @@ void showMainMenu(Bank *bank)
 {
     printf("\n===== BANK SYSTEM MENU =====\n");
     printf("1. Lihat Info Akun\n");
-    printf("2. Deposit\n");
-    printf("3. Withdraw\n");
+    printf("2. Setoran\n");
+    printf("3. Penarikan\n");
     printf("4. Lihat Riwayat Transaksi\n");
     printf("5. Transfer Uang\n");
     printf("6. Ubah Password\n");
@@ -95,13 +95,13 @@ void handleCustomerSession(Bank *bank, Account *currentAcc)
             break;
 
         case 2:
-            printf("Nominal deposit: ");
+            printf("Mau setoran berapa?: ");
             scanf("%lf", &amount);
             deposit(bank, currentAcc->id, amount);
             break;
 
         case 3:
-            printf("Nominal withdraw: ");
+            printf("Mau narik berapa?: ");
             scanf("%lf", &amount);
             withdraw(bank, currentAcc->id, amount);
             break;

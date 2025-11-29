@@ -55,7 +55,7 @@ void viewAccountDetails(Bank *bank, int accountId)
 
     if (acc == NULL)
     {
-        printf("Account not found!\n");
+        printf("Akun tidak ditemukan!\n");
         return;
     }
 
@@ -63,17 +63,17 @@ void viewAccountDetails(Bank *bank, int accountId)
     printf("========================================\n");
     printf("     ACCOUNT DETAILS - %s (ID: %d)\n", acc->name, acc->id);
     printf("========================================\n");
-    printf("Name: %s\n", acc->name);
+    printf("Nama: %s\n", acc->name);
     printf("ID: %d\n", acc->id);
-    printf("Balance: Rp %.2lf\n", acc->balance);
-    printf("Status: %s\n", acc->isFrozen ? "FROZEN" : "ACTIVE");
+    printf("Saldo: Rp %.2lf\n", acc->balance);
+    printf("Status: %s\n", acc->isFrozen ? "DIBEKUKAN" : "AKTIF");
 
     if (acc->isFrozen)
     {
-        printf("Freeze Reason: %s\n", acc->freezeReason);
+        printf("Alasan pembekuan: %s\n", acc->freezeReason);
     }
 
-    printf("\nTRANSACTION HISTORY:\n");
+    printf("\nRiwayat Transaksi:\n");
     printf("----------------------------------------\n");
 
     if (acc->transactionCount == 0)
@@ -83,7 +83,7 @@ void viewAccountDetails(Bank *bank, int accountId)
     else
     {
         printf("%-12s %-12s %-15s %s\n",
-               "Date", "Type", "Amount", "Note");
+               "Tanggal", "Tipe", "Jumlah", "Note");
         printf("----------------------------------------\n");
 
         for (int i = 0; i < acc->transactionCount; i++)
@@ -117,7 +117,7 @@ void adminFreezeAccount(Bank *bank, int accountId, const char *reason)
     freezeAccount(acc, reason);
 
     char description[300];
-    sprintf(description, "Akun dibekukan. alasannya: %s", reason);
+    sprintf(description, "Alasan pembekuan akun: %s", reason);
     addAuditEntry(bank, "ADMIN", "FREEZE_ACCOUNT", accountId, description);
 
     printf("✓ Akun %d (%s) sudah dibekukan.\n", accountId, acc->name);
@@ -130,22 +130,22 @@ void adminUnfreezeAccount(Bank *bank, int accountId)
 
     if (acc == NULL)
     {
-        printf("Account not found!\n");
+        printf("Akun tidak ditemukan!\n");
         return;
     }
 
     if (!acc->isFrozen)
     {
-        printf("Account is not frozen!\n");
+        printf("Akun masih aktif!\n");
         return;
     }
 
     unfreezeAccount(acc);
 
     addAuditEntry(bank, "ADMIN", "UNFREEZE_ACCOUNT", accountId,
-                  "Account unfrozen");
+                  "Akun diaktifkan");
 
-    printf("✓ Account %d (%s) has been unfrozen.\n", accountId, acc->name);
+    printf("✓ Akun %d (%s) sudah diaktifkan kembali.\n", accountId, acc->name);
 }
 
 // Reset account password
@@ -155,12 +155,12 @@ void resetAccountPassword(Bank *bank, int accountId)
 
     if (acc == NULL)
     {
-        printf("Account not found!\n");
+        printf("Akun tidak ditemukan!\n");
         return;
     }
 
     char newPassword[50];
-    printf("Enter new password: ");
+    printf("Masukkan password baru: ");
     scanf("%s", newPassword);
 
     char oldPassword[50];
@@ -169,11 +169,11 @@ void resetAccountPassword(Bank *bank, int accountId)
     salinString(acc->password, newPassword);
 
     char description[300];
-    sprintf(description, "Password reset for account %d (%s)", accountId, acc->name);
+    sprintf(description, "Password telah direset untuk akun %d (%s)", accountId, acc->name);
     addAuditEntry(bank, "ADMIN", "RESET_PASSWORD", accountId, description);
 
-    printf("✓ Password reset successfully.\n");
-    printf("New password: %s (Customer should change this after login)\n", newPassword);
+    printf("✓ Password berhasil diubah.\n");
+    printf("New password: %s (Customer should change this  after login)\n", newPassword);
 }
 
 // Force withdraw
@@ -183,13 +183,13 @@ void forceWithdraw(Bank *bank, int accountId, double amount, const char *reason)
 
     if (acc == NULL)
     {
-        printf("Account not found!\n");
+        printf("Akun tidak ditemukan!\n");
         return;
     }
 
     if (amount <= 0)
     {
-        printf("Invalid amount!\n");
+        printf("Jumlah tidak valid!\n");
         return;
     }
 
@@ -199,20 +199,20 @@ void forceWithdraw(Bank *bank, int accountId, double amount, const char *reason)
     if (acc->transactionCount < MAX_TRANSACTIONS)
     {
         Transaction *trans = &acc->transactions[acc->transactionCount];
-        salinString(trans->type, "FORCE_WITHDRAW");
+        salinString(trans->type, "Menarik Paksa");
         trans->amount = amount;
         salinString(trans->date, "");
-        salinString(trans->note, "Force withdraw by admin: ");
+        salinString(trans->note, "Penarikan paksa oleh admin: ");
         gabungkanString(trans->note, reason);
         acc->transactionCount++;
     }
 
     char description[300];
-    sprintf(description, "Force withdraw from account %d. Reason: %s", accountId, reason);
-    addAuditEntry(bank, "ADMIN", "FORCE_WITHDRAW", accountId, description);
+    sprintf(description, "Penarikan paksa dari akun %d. Alasannya: %s", accountId, reason);
+    addAuditEntry(bank, "ADMIN", "Menarik Paksa", accountId, description);
 
-    printf("✓ Withdrawn Rp %.2lf from account %d.\n", amount, accountId);
-    printf("  New balance: Rp %.2lf\n", acc->balance);
+    printf("✓ Penarikan Rp %.2lf dari akun %d.\n", amount, accountId);
+    printf("  Saldo baru: Rp %.2lf\n", acc->balance);
 }
 
 // Manage accounts submenu
@@ -229,14 +229,14 @@ void manageAccounts(Bank *bank)
         printf("========================================\n");
         printf("       MANAGE ACCOUNTS\n");
         printf("========================================\n");
-        printf("1. Freeze Account\n");
-        printf("2. Unfreeze Account\n");
+        printf("1. Bekukan akun\n");
+        printf("2. Aktivasi akun\n");
         printf("3. Reset Password\n");
-        printf("4. View Account Details\n");
-        printf("5. Force Withdraw\n");
-        printf("0. Back\n");
+        printf("4. Lihat detail akun\n");
+        printf("5. Penarikan paksa\n");
+        printf("0. Kembali\n");
         printf("========================================\n");
-        printf("Choose: ");
+        printf("Pilih: ");
         scanf("%d", &choice);
 
         switch (choice)
@@ -278,11 +278,11 @@ void manageAccounts(Bank *bank)
             break;
 
         case 0:
-            printf("kembali ke dashboar admin\n");
+            printf("kembali ke dashboard admin\n");
             break;
 
         default:
-            printf("Pilihan kamu invalid\n");
+            printf("Pilihan kamu tidak valid\n");
         }
 
     } while (choice != 0);
@@ -326,18 +326,18 @@ void generateReport(Bank *bank)
     printf("akun yang aktif: %d\n", activeCount);
     printf("akun yang dibekukan: %d\n", frozenCount);
 
-    printf("\nBalance Summary:\n");
-    printf("Total Balance: Rp %.2lf\n", totalBalance);
+    printf("\nRingksan Saldo:\n");
+    printf("Total Saldo: Rp %.2lf\n", totalBalance);
 
     if (bank->accountCount > 0)
     {
-        printf("Average Balance: Rp %.2lf\n", totalBalance / bank->accountCount);
-        printf("Highest Balance: Rp %.2lf\n", highestBalance);
-        printf("Lowest Balance: Rp %.2lf\n", lowestBalance);
+        printf("Saldo Rata-rata: Rp %.2lf\n", totalBalance / bank->accountCount);
+        printf("Saldo Tertinggi: Rp %.2lf\n", highestBalance);
+        printf("Saldo Terendah: Rp %.2lf\n", lowestBalance);
     }
 
-    printf("\nTransaction Summary:\n");
-    printf("Total Transactions: %d\n", totalTransactions);
+    printf("\nRingksan Transaki:\n");
+    printf("Total Transaksi: %d\n", totalTransactions);
 
     double totalDeposits = 0, totalWithdrawals = 0, totalTransfers = 0;
 
@@ -349,7 +349,7 @@ void generateReport(Bank *bank)
             Transaction *trans = &acc->transactions[j];
             if (bandingkanString(trans->type, "DEPOSIT") == 0)
                 totalDeposits += trans->amount;
-            else if (bandingkanString(trans->type, "WITHDRAW") == 0)
+            else if (bandingkanString(trans->type, "PENARIKAN") == 0)
                 totalWithdrawals += trans->amount;
             else if (bandingkanString(trans->type, "TRANSFER") == 0)
                 totalTransfers += trans->amount;
@@ -357,7 +357,7 @@ void generateReport(Bank *bank)
     }
 
     printf("Total Deposits: Rp %.2lf\n", totalDeposits);
-    printf("Total Withdrawals: Rp %.2lf\n", totalWithdrawals);
+    printf("Total Penarikan: Rp %.2lf\n", totalWithdrawals);
     printf("Total Transfers: Rp %.2lf\n", totalTransfers);
 
     printf("\nAudit Log:\n");
@@ -371,7 +371,7 @@ void showAdminDashboard(Bank *bank)
 {
     int choice;
 
-    addAuditEntry(bank, "ADMIN", "LOGIN", -1, "Admin login successful");
+    addAuditEntry(bank, "ADMIN", "LOGIN", -1, "Admin berhasil login");
 
     do
     {
