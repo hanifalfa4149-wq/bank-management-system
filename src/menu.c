@@ -8,7 +8,6 @@
 #include "../include/admin.h"
 #include "../include/audit.h"
 
-// Entry menu - choose between customer and admin
 void showEntryMenu()
 {
     printf("\n");
