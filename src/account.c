@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <string.h>
-#include <ctype.h>
 #include "../include/account.h"
 #include "../include/bank.h"
 #include "../include/utils.h"
@@ -23,11 +21,11 @@ void createAccount(Bank *bank)
     {
         printf("Masukkan nama: ");
         scanf("%s", tempName);
-        if (strlen(tempName) == 0)
+        if (hitungstring(tempName) == 0)
         {
             printf("Nama tidak boleh kosong!\n");
         }
-    } while (strlen(tempName) == 0);
+    } while (hitungstring(tempName) == 0);
 
     salinString(acc->name, tempName);
 
@@ -40,7 +38,7 @@ void createAccount(Bank *bank)
         printf("Masukkan password (6 digit angka): ");
         scanf("%s", tempPassword);
 
-        length = strlen(tempPassword);
+        length = hitungstring(tempPassword);
         if (length != 6)
         {
             printf("Password harus tepat 6 karakter.\n");
@@ -50,7 +48,7 @@ void createAccount(Bank *bank)
         {
             for (i = 0; i < length; i++)
             {
-                if (!isdigit((unsigned char)tempPassword[i]))
+                if (tempPassword[i] < '0' || tempPassword[i] > '9')
                 {
                     validPassword = 0;
                     printf("Password hanya boleh berisi angka 0-9.\n");
