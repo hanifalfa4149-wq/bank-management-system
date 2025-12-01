@@ -43,7 +43,7 @@ Account *customerLogin(Bank *bank)
 
     printf("\n=== CUSTOMER LOGIN ===\n");
     printf("ID akun: ");
-    scanf("%d", &id);
+    id = getIntInput();
 
     acc = findAccount(bank, id);
     if (!acc)
@@ -59,7 +59,7 @@ Account *customerLogin(Bank *bank)
     }
 
     printf("Password: ");
-    scanf("%s", password);
+    getStringInput(password, 50);
 
     if (!validatePassword(acc, password))
     {
@@ -84,7 +84,7 @@ void handleCustomerSession(Bank *bank, Account *currentAcc)
                currentAcc->name, currentAcc->id, currentAcc->balance);
         showMainMenu(bank);
         printf("Pilih menu: ");
-        scanf("%d", &pilih);
+        pilih = getIntInput();
 
         switch (pilih)
         {
@@ -95,13 +95,13 @@ void handleCustomerSession(Bank *bank, Account *currentAcc)
 
         case 2:
             printf("Mau setoran berapa?: ");
-            scanf("%lf", &amount);
+            amount = getDoubleInput();
             deposit(bank, currentAcc->id, amount);
             break;
 
         case 3:
             printf("Mau narik berapa?: ");
-            scanf("%lf", &amount);
+            amount = getDoubleInput();
             withdraw(bank, currentAcc->id, amount);
             break;
 
@@ -111,20 +111,21 @@ void handleCustomerSession(Bank *bank, Account *currentAcc)
 
         case 5:
             printf("ID akun penerima: ");
-            scanf("%d", &toId);
+            toId = getIntInput();
             printf("Nominal transfer: ");
-            scanf("%lf", &amount);
+            amount = getDoubleInput();
             transferMoney(bank, currentAcc->id, toId, amount);
             break;
 
         case 6:
             printf("Masukkan password lama: ");
-            scanf("%s", password);
+            getStringInput(password, 50);
             if (validatePassword(currentAcc, password))
             {
-                printf("Masukkan password baru: ");
-                scanf("%s", password);
-                setAccountPassword(currentAcc, password);
+                printf("Masukkan password baru (6 digit angka): ");
+                char newPass[50];
+                getStringInput(newPass, 50);
+                setAccountPassword(currentAcc, newPass);
                 printf("Password berhasil diubah!\n");
             }
             else
@@ -160,7 +161,7 @@ void handleMenu(Bank *bank)
     {
         showEntryMenu();
         printf("Pilih menu: ");
-        scanf("%d", &pilih);
+        pilih = getIntInput();
 
         switch (pilih)
         {
