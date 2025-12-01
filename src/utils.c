@@ -92,6 +92,61 @@ void clearScreen()
 void pauseScreen()
 {
     printf("\nTekan ENTER untuk melanjutkan...");
-    getchar();
-    getchar();
+    clearInputBuffer();
+}
+
+// Clear input buffer
+void clearInputBuffer()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {}
+}
+
+// Get string input with length limit
+void getStringInput(char *buffer, int maxLength)
+{
+    if (maxLength < 1) return;
+    
+    int c;
+    int i = 0;
+    
+    // Read until newline or EOF
+    while ((c = getchar()) != '\n' && c != EOF) {
+        if (i < maxLength - 1) {
+            buffer[i++] = (char)c;
+        }
+    }
+    
+    // Null-terminate the string
+    buffer[i] = '\0';
+}
+
+// Get integer input with validation
+int getIntInput()
+{
+    char buffer[100];
+    int number;
+    
+    while (1) {
+        getStringInput(buffer, sizeof(buffer));
+        if (sscanf(buffer, "%d", &number) == 1) {
+            return number;
+        }
+        printf("Input tidak valid. Masukkan angka: ");
+    }
+}
+
+// Get double input with validation
+double getDoubleInput()
+{
+    char buffer[100];
+    double number;
+    
+    while (1) {
+        getStringInput(buffer, sizeof(buffer));
+        if (sscanf(buffer, "%lf", &number) == 1) {
+            return number;
+        }
+        printf("Input tidak valid. Masukkan angka: ");
+    }
 }
