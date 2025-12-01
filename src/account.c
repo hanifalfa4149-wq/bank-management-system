@@ -19,8 +19,8 @@ void createAccount(Bank *bank)
 
     do
     {
-        printf("Masukkan nama: ");
-        scanf("%s", tempName);
+        printf("Masukkan nama (maks %d karakter): ", MAX_NAME - 1);
+        getStringInput(tempName, MAX_NAME);
         if (hitungstring(tempName) == 0)
         {
             printf("Nama tidak boleh kosong!\n");
@@ -36,7 +36,7 @@ void createAccount(Bank *bank)
     {
         validPassword = 1;
         printf("Masukkan password (6 digit angka): ");
-        scanf("%s", tempPassword);
+        getStringInput(tempPassword, MAX_PASSWORD);
 
         length = hitungstring(tempPassword);
         if (length != 6)
