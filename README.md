@@ -104,8 +104,8 @@ bank-management-system/
 | NIM | Nama | Peran |
 |-----|------|-------|
 | 25071104149 | Hanif Alfa Rizki | Tech Lead |
-| 00000000000 | nama anggota | Developer |
-| 00000000000 | Nama Anggota 2 | Developer |
+| 25071207230 | Sumedho Ariya Herdaya | Developer |
+| 25071104587 | Kahijina Minda Angga kusuma | Developer |
 | 25071100710 | Salsabila | dokumentasi |
 | 25071207626 | Zullia Adhia Ayzila | PPT Builder |
 
